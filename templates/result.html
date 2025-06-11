@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Name Match Memory Game - Result</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .result-container {
+            background-color: #f5f5f5;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .correct {
+            color: green;
+            font-weight: bold;
+            font-size: 24px;
+        }
+        .incorrect {
+            color: red;
+            font-weight: bold;
+            font-size: 24px;
+        }
+        .next-btn, .restart-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+        }
+        .next-btn:hover, .restart-btn:hover {
+            background-color: #45a049;
+        }
+        .game-over {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .final-score {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .accuracy {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Name Match Memory Game</h1>
+    
+    <div class="result-container">
+        {% if game_over %}
+            <div class="game-over">Game Over!</div>
+            <div class="final-score">Your final score: {{ score }} / {{ total_rounds }}</div>
+            <div class="accuracy">Accuracy: {{ accuracy|round(1) }}%</div>
+            
+            {% if accuracy == 100 %}
+                <p>Perfect score! Amazing memory!</p>
+            {% elif accuracy >= 80 %}
+                <p>Great job! You're getting good at this!</p>
+            {% elif accuracy >= 60 %}
+                <p>Not bad! Keep practicing!</p>
+            {% else %}
+                <p>Keep practicing! You'll get better with time.</p>
+            {% endif %}
+            
+            <a href="{{ url_for('index') }}" class="restart-btn">Play Again</a>
+        {% else %}
+            <div class="game-header">
+                <div>Round: {{ current_round }} / {{ total_rounds }}</div>
+                <div>Score: {{ score }}</div>
+            </div>
+            
+            {% if is_correct %}
+                <p class="correct">✓ Correct!</p>
+                <p>You correctly identified {{ correct_name }}.</p>
+            {% else %}
+                <p class="incorrect">✗ Incorrect</p>
+                <p>You selected {{ selected_name }}.</p>
+                <p>The correct answer was {{ correct_name }}.</p>
+            {% endif %}
+            
+            <a href="{{ url_for('play_round') }}" class="next-btn">Next Question</a>
+        {% endif %}
+    </div>
+</body>
+</html>

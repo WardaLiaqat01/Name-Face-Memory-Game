@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Name Match Memory Game - Welcome</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #333;
+        }
+        .container {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            padding: 40px;
+            text-align: center;
+            max-width: 600px;
+            width: 90%;
+        }
+        h1 {
+            color: #5c62d6;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        .tagline {
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        .faces-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+        .face {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin: 10px;
+            object-fit: cover;
+            border: 3px solid white;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+        .face:hover {
+            transform: scale(1.1);
+        }
+        .play-btn {
+            background-color: #5c62d6;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            border-radius: 30px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .play-btn:hover {
+            background-color: #4a4fb8;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        .instructions {
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 30px;
+            text-align: left;
+        }
+        .instructions h2 {
+            color: #5c62d6;
+            margin-top: 0;
+        }
+        .instructions ol {
+            padding-left: 20px;
+        }
+        .instructions li {
+            margin-bottom: 10px;
+        }
+        .stats {
+            margin-top: 20px;
+            font-style: italic;
+            color: #666;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Name Match Memory Game</h1>
+        <p class="tagline">Train your brain to remember names and faces!</p>
+        
+        <div class="faces-container">
+            <!-- We'll dynamically insert 5 random faces from our database here -->
+            {% for person in random_people %}
+                <img src="{{ url_for('static', filename='images/' + person.id + '.jpg') }}" alt="{{ person.name }}" class="face">
+            {% endfor %}
+        </div>
+        
+        <div class="instructions">
+            <h2>How to Play:</h2>
+            <ol>
+                <li>You'll be shown a face with multiple name options</li>
+                <li>Select the name you think matches the face</li>
+                <li>Get immediate feedback on your answer</li>
+                <li>Complete 5 rounds to test your memory</li>
+                <li>See your final score and accuracy</li>
+            </ol>
+        </div>
+        
+        <a href="{{ url_for('index') }}" class="play-btn pulse">Start Playing!</a>
+        
+        <div class="stats">
+            {% if stats %}
+                <p>Games played: {{ stats.games_played }} | Best accuracy: {{ stats.best_accuracy|round(1) }}%</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
